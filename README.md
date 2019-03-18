@@ -4,5 +4,5 @@
 
 Example usage:
 ```javascript
-gentoo@gentoo:~/Documents/Python/OKCupidSearch$ python src/okcupidsearch.py -eexample@email.com -ppassword -kMike
+gentoo@gentoo:~/Python/OKCupidSearch$ python src/okcupidsearch.py -eexample@email.com -ppassword -kMike
 ```
