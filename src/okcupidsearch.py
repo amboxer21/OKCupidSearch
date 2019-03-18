@@ -5,18 +5,15 @@ import sys
 import time
 
 from selenium import webdriver
+from optparse import OptionParser
 from selenium.webdriver.common.keys import Keys
 
 class OkCupidSearch(object):
 
-    def __init__(self):
-        self.driver = webdriver.Firefox()
+    def __init__(self,keyword):
+        self.keyword = keyword
+        self.driver  = webdriver.Firefox()
         self.driver.get("https://www.okcupid.com/login")
-
-        self.login('email_goes_here','password_goes_here')
-        self.browse_matches()
-        self.scroll_to_bottom()
-        self.main()
 
     def new_tab(self):
         self.driver.execute_script('window.open();')
@@ -33,7 +30,7 @@ class OkCupidSearch(object):
         self.switch_to_new_tab()
         self.driver.get(link)
         name = self.driver.find_element_by_xpath("//div[@class='userinfo2015-basics-username']").text
-        res = re.search('darren', name, re.M | re.I)
+        res = re.search(self.keyword, name, re.M | re.I)
         if res is not None:
             print('Found match: '+str(link))
         else:
@@ -69,4 +66,21 @@ class OkCupidSearch(object):
                 self.find_name_by_profile(res.group())
 
 if __name__ == '__main__':
-    OkCupidSearch()
+
+    parser = OptionParser()
+    parser.add_option('-e', '--email',
+        dest='email', default='example@email.com',
+        help='This is your OK Cupid login E-mail.')
+    parser.add_option('-p', '--password',
+        dest='password', default='password',
+        help='This is your OK Cupid login password.')
+    parser.add_option('-k', '--keyword',
+        dest='keyword', default='keyword',
+        help='This is the name you would like to search on OK Cupid.')
+    (options, args) = parser.parse_args()
+
+    okcupidsearch = OkCupidSearch(options.keyword)
+    okcupidsearch.login(options.email,options.password)
+    okcupidsearch.browse_matches()
+    okcupidsearch.scroll_to_bottom()
+    okcupidsearch.main()
