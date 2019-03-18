@@ -14,19 +14,19 @@ class OkCupidSearch(object):
         self.driver  = webdriver.Firefox()
         self.driver.get("https://www.okcupid.com/login")
 
+    def switch_to_tab(self,tab_number):
+        self.driver.switch_to.window(self.driver.window_handles[tab_number])
+
     def new_tab(self):
         self.driver.execute_script('window.open();')
-
-    def switch_to_new_tab(self):    
-        self.driver.switch_to.window(self.driver.window_handles[1])
+        self.switch_to_tab(1)
 
     def close_tab(self):
         self.driver.execute_script('window.close();')
-        self.driver.switch_to.window(self.driver.window_handles[0])
+        self.switch_to_tab(0)
 
     def find_name_by_profile(self,link):
         self.new_tab()
-        self.switch_to_new_tab()
         self.driver.get(link)
         name = self.driver.find_element_by_xpath("//div[@class='userinfo2015-basics-username']").text
         res = re.search(self.keyword, name, re.M | re.I)
