@@ -33,8 +33,7 @@ class OkCupidSearch(object):
         res = re.search(self.keyword, name, re.M | re.I)
         if res is not None:
             print('Found match: '+str(link))
-        else:
-            self.close_tab()
+        self.close_tab()
 
     def login(self,email,password):
         uname = self.driver.find_element_by_name("username")
