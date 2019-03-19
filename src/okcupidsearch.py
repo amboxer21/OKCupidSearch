@@ -48,7 +48,7 @@ class OkCupidSearch(object):
     def scroll_to_bottom(self):
         try:
             iterator = 0
-            while iterator < 20:
+            while iterator < 120:
                 iterator += 1
                 self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
                 time.sleep(3)
