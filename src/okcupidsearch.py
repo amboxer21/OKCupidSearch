@@ -6,6 +6,7 @@ import time
 from selenium import webdriver
 from optparse import OptionParser
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import NoSuchElementException
 
 class OkCupidSearch(object):
 
@@ -52,7 +53,13 @@ class OkCupidSearch(object):
                 iterator += 1
                 self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
                 time.sleep(3)
-        except:
+                try:
+                    end = self.driver.find_element_by_xpath("//*[contains(text(), 'everyone we could find')]")
+                    if end.text is not None:
+                        break
+                except NoSuchElementException:
+                    pass
+        except Exception as exception:
             pass
 
     def main(self): 
