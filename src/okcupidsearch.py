@@ -11,7 +11,7 @@ from selenium.common.exceptions import NoSuchElementException
 class OkCupidSearch(object):
 
     def __init__(self,options_dict={}):
-        broswer = options_dict['broswer'].lower()
+        browser = options_dict['browser'].lower()
         self.keyword = options_dict['keyword']
         if 'firefox' in browser:
             self.driver  = webdriver.Firefox()
@@ -76,14 +76,15 @@ class OkCupidSearch(object):
 
 if __name__ == '__main__':
 
-    parser = OptionParser()
+    parser = OptionParser('')
     parser.add_option('-e', '--email',
-        dest='email', default='example@email.com',
-        help='This is your OK Cupid login E-mail.')
+        dest='email',
+        help='This is your OK Cupid login E-mail. '
+            +'This is a mandatory argument!')
     parser.add_option('-p', '--password',
-        dest='password', default='password',
+        dest='password',
         help='This is your OK Cupid login password. '
-            +'This defaults to "password".')
+            +'This is a mandatory argument!')
     parser.add_option('-k', '--keyword',
         dest='keyword', default='Anthony',
         help='This is the name you would like to search on OK Cupid. '
@@ -98,6 +99,9 @@ if __name__ == '__main__':
         'browser': options.browser,
         'keyword': options.keyword
     }
+
+    if not options.email or not options.password:
+        parser.error("Please provide both your OKCupid E-mail and password!")
 
     okcupidsearch = OkCupidSearch(options_dict)
     okcupidsearch.login(options.email,options.password)
