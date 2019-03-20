@@ -10,9 +10,13 @@ from selenium.common.exceptions import NoSuchElementException
 
 class OkCupidSearch(object):
 
-    def __init__(self,keyword):
-        self.keyword = keyword
-        self.driver  = webdriver.Firefox()
+    def __init__(self,options_dict={}):
+        broswer = options_dict['broswer'].lower()
+        self.keyword = options_dict['keyword']
+        if 'firefox' in browser:
+            self.driver  = webdriver.Firefox()
+        elif 'chrome' in browser:
+            self.driver = webdriver.Chrome()
         self.driver.get("https://www.okcupid.com/login")
 
     def switch_to_tab(self,tab_number):
@@ -78,13 +82,24 @@ if __name__ == '__main__':
         help='This is your OK Cupid login E-mail.')
     parser.add_option('-p', '--password',
         dest='password', default='password',
-        help='This is your OK Cupid login password.')
+        help='This is your OK Cupid login password. '
+            +'This defaults to "password".')
     parser.add_option('-k', '--keyword',
-        dest='keyword', default='keyword',
-        help='This is the name you would like to search on OK Cupid.')
+        dest='keyword', default='Anthony',
+        help='This is the name you would like to search on OK Cupid. '
+            +'This defaults to "Anthony".')
+    parser.add_option('-b', '--browser',
+        dest='browser', default='firefox',
+        help='This is the browser you want to run the search program with. '
+            +'This defaults to FireFox.')
     (options, args) = parser.parse_args()
 
-    okcupidsearch = OkCupidSearch(options.keyword)
+    options_dict = {
+        'browser': options.browser,
+        'keyword': options.keyword
+    }
+
+    okcupidsearch = OkCupidSearch(options_dict)
     okcupidsearch.login(options.email,options.password)
     okcupidsearch.browse_matches()
     okcupidsearch.scroll_to_bottom()
